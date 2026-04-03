@@ -3,6 +3,7 @@ import numpy as np
 
 from image_histograms import compute_grayscale_histogram
 from image_metrics import measure_brightness, measure_contrast
+from image_transforms import shift_brightness
 from image_utils import get_default_image_path, get_project_root, load_color_image, to_grayscale
 
 
@@ -14,10 +15,9 @@ gray_image = to_grayscale(image_bgr)
 
 shift_value = 40
 
+darker_image = shift_brightness(gray_image, -shift_value)
+brighter_image = shift_brightness(gray_image, shift_value)
 gray_int = gray_image.astype(np.int16)
-
-darker_image = np.clip(gray_int - shift_value, 0, 255).astype(np.uint8)
-brighter_image = np.clip(gray_int + shift_value, 0, 255).astype(np.uint8)
 
 hist_original, bins = compute_grayscale_histogram(gray_image)
 hist_darker, _ = compute_grayscale_histogram(darker_image)
