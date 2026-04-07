@@ -1,112 +1,93 @@
 # Vision Imaging Lab
 
-`vision-imaging-lab` is a step-by-step computer vision and image-processing project.
+`vision-imaging-lab` is a basics-focused computer vision and image-processing tutorial repo.
 
-The goal is to grow from beginner understanding to more advanced imaging practice by building the pipeline manually:
-- learn image representation
-- measure image properties
-- analyze histograms
-- study transforms
-- compare blur, noise, and denoising methods
-- understand camera calibration
-- build reusable code from experiments
+This repository is intentionally kept as a learning lab:
+- build concepts step by step
+- understand what the code is doing
+- connect visual effects with quantitative metrics
+- practice organizing small experiments into reusable modules
 
-It is designed to help a beginner grow step by step toward more advanced imaging and computer vision practice.
+It is not meant to be the final advanced project repo.
+More ambitious projects should live in separate repositories.
 
 ---
 
-## Project Structure
+## What This Repo Covers
 
-This project has two stages:
+This repo focuses on foundational topics:
 
-### Stage 1: Learning Tutorial
-Build understanding manually, one concept at a time, and turn that learning into reusable code and clear notebooks.
-
-### Stage 2: Ambitious and Valuable Practice
-Use stronger datasets, tighter project scope, and more serious evaluation to build a portfolio-quality mini project.
-
-Stage 1 is now complete enough to close as a learning checkpoint.
-
----
-
-## What Stage 1 Covers
-
-### Notebook 01: Image Quality Basics
-
-Topics covered:
 - image loading and grayscale conversion
-- brightness and contrast measurement
+- brightness and contrast
 - histogram analysis
+- brightness shift
+- contrast scaling
+- histogram equalization
+- CLAHE
+- blur and sharpness
+- noise and denoising
+- small-dataset analysis
+- camera calibration basics
+
+---
+
+## Main Learning Notebooks
+
+### `notebooks/01_image_quality_basics.ipynb`
+
+Covers:
+- image representation
+- brightness and contrast
+- histograms
+- intensity transforms
+- enhancement methods
+- blur and noise
+- denoising tradeoffs
+- small-dataset reasoning
+
+### `notebooks/02_camera_calibration.ipynb`
+
+Covers:
+- chessboard pattern definition
+- inner corners vs square counts
+- corner detection
+- object points and image points
+- camera calibration
+- camera matrix and distortion coefficients
+- undistortion
+- interpretation of calibration results
+
+---
+
+## Main Reusable Modules
+
+### `src/image_utils.py`
+Basic helpers for:
+- loading images
+- grayscale conversion
+- project paths
+
+### `src/image_metrics.py`
+Metrics for:
+- brightness
+- contrast
+- min/max intensity
+- sharpness
+- estimated noise
+- MAE / MSE / PSNR
+
+### `src/image_histograms.py`
+Helpers for:
+- grayscale histogram computation
+
+### `src/image_transforms.py`
+Transforms for:
 - brightness shift
 - contrast scaling
 - centered contrast
 - histogram equalization
 - CLAHE
-- blur and sharpness
-- noise estimation
-- denoising tradeoffs
-- small-dataset analysis
-- category-based enhancement recommendations
-
-Main lessons:
-- brightness, contrast, sharpness, and noise are different image properties
-- histograms explain intensity distribution better than one summary number
-- clipping causes information loss
-- quantization can create empty histogram bins after transforms
-- centered contrast is more meaningful than naive contrast scaling
-- histogram equalization can over-enhance highlights
-- soft CLAHE gives more balanced local enhancement
-- denoising is a tradeoff, not magic
-
-### Notebook 02: Camera Calibration Basics
-
-Topics covered:
-- chessboard pattern definition using inner corners
-- corner detection
-- inspection of corner ordering
-- failed-detection inspection
-- object points and image points
-- camera calibration
-- camera matrix and distortion coefficients
-- undistortion
-- interpretation of calibration outputs
-
-Main lessons:
-- calibration uses inner corners, not square counts
-- object points are defined in the board’s local coordinate system
-- the same object-point grid is reused for all images
-- calibration estimates one shared camera model and one pose per successful image
-- not every calibration image has to succeed
-- realistic undistortion can be subtle rather than dramatic
-
----
-
-## Best Findings So Far
-
-### Contrast and enhancement
-- naive contrast scaling increased brightness too much
-- centered contrast scaling preserved brightness better and produced a more meaningful contrast increase
-- histogram equalization was too aggressive for the current test image
-- soft CLAHE gave a better balance between local detail and natural appearance
-
-### Blur, noise, and denoising
-- blur changed brightness very little but strongly reduced Laplacian sharpness
-- noise falsely inflated sharpness metrics because it adds high-frequency variation
-- Gaussian denoise reduced noise strongly but oversmoothed the image
-- bilateral denoise gave the best balance in the current denoising experiment
-
-### Small-dataset analysis
-- low-light images were clearly the darkest category
-- blurry images were clearly the least sharp category
-- high-contrast images showed the strongest contrast
-- means and medians can tell different stories when one image dominates a category
-- enhancement recommendations should depend on image condition, not one universal rule
-
-### Calibration
-- a real OpenCV chessboard sample set worked much better for learning realistic calibration behavior
-- calibration succeeded on a useful subset of images
-- the estimated intrinsics and distortion were numerically plausible
-- the undistortion effect was subtle but believable
+- Gaussian / median / bilateral denoising
 
 ---
 
@@ -123,30 +104,12 @@ vision-imaging-lab/
 `-- src/
 ```
 
-### Important notebooks
-- `notebooks/01_image_quality_basics.ipynb`
-- `notebooks/02_camera_calibration.ipynb`
-
-### Important reusable modules
-- `src/image_utils.py`
-- `src/image_metrics.py`
-- `src/image_histograms.py`
-- `src/image_transforms.py`
-
-### Important analysis scripts
-- `src/analyze_dataset.py`
-- `src/plot_dataset_summary.py`
-- `src/clahe_dataset_evaluation.py`
-- `src/plot_clahe_category_summary.py`
-- `src/compare_clahe_vs_centered_contrast.py`
-- `src/inspect_outliers.py`
-
 ---
 
 ## Current Datasets
 
 ### Image-quality mini dataset
-Used for Stage 1 category analysis:
+Used for learning small-dataset analysis:
 - `data/raw/blurry/`
 - `data/raw/daylight/`
 - `data/raw/high_contrast/`
@@ -155,11 +118,10 @@ Used for Stage 1 category analysis:
 ### Calibration dataset
 Used in notebook02:
 - real OpenCV sample chessboard images in `data/calibration/`
-- synthetic calibration images kept in `data/calibration_synthetic_backup/`
 
 ---
 
-## How to Run
+## How To Run
 
 Use your conda environment, then run scripts from the project root.
 
@@ -183,27 +145,28 @@ jupyter notebook
 
 ---
 
-## Learning Path
+## What This Repo Teaches
 
-This project is meant to function as a growth ladder:
+By working through this repo, a beginner should learn that:
 
-- beginner: understand images, grayscale, brightness, contrast, histograms, blur, and noise
-- intermediate: build reusable utilities, metrics, transforms, and structured experiments
-- advanced direction: compare methods critically, reason about tradeoffs, analyze datasets, and understand camera geometry
-
-The long-term goal is to move from learning scripts toward a small but serious image-processing and computer-vision toolkit.
+- brightness, contrast, sharpness, and noise are different image properties
+- histograms often explain image behavior better than a single summary number
+- clipping causes information loss
+- enhancement is not always improvement
+- denoising is a tradeoff, not magic
+- metrics and visual inspection should be used together
+- calibration needs consistent pattern geometry and successful corner detection
 
 ---
 
-## What Comes Next
+## Scope
 
-Stage 1 is complete enough to close.
+This repository is intentionally limited to fundamentals and guided practice.
 
-Stage 2 will begin with:
-- choosing a strong open-source dataset
-- defining a focused computer vision task
-- planning a more ambitious, portfolio-quality mini project
+Its purpose is:
+- tutorial learning
+- concept reinforcement
+- notebook-based review
+- small reusable building blocks
 
-The final goal is for this repository to become both:
-- a strong learning record
-- a portfolio-ready computer vision project
+It should stay focused on basics.
