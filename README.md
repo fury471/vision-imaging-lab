@@ -8,9 +8,6 @@ This repository is intentionally kept as a learning lab:
 - connect visual effects with quantitative metrics
 - practice organizing small experiments into reusable modules
 
-It is not meant to be the final advanced project repo.
-More ambitious projects should live in separate repositories.
-
 ---
 
 ## What This Repo Covers
